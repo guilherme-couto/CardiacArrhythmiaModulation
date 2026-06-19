@@ -1,0 +1,92 @@
+======================================================================================
+ MULTIVARIATE ANALYSIS DETAILED REPORT - SCENARIO I
+======================================================================================
+
+--- PRINCIPAL COMPONENT ANALYSIS (PCA) ---
+Total variance explained by PC1 and PC2: 61.97%
+
+>> PC1 Contributions (Explains 35.16% of variance):
+   Fractal Dimension                   : +0.5070
+   Moran's I                           : -0.4454
+   Betti 1                             : +0.4001
+   Shortest Percolating Path           : +0.3781
+   Topological Conduction Efficiency   : -0.3699
+   Betti 0                             : +0.2471
+   Mean Aspect Ratio                   : -0.1993
+   Normalized Mean Cluster Size        : -0.0633
+
+>> PC2 Contributions (Explains 26.81% of variance):
+   Topological Conduction Efficiency   : +0.4480
+   Betti 1                             : +0.4124
+   Shortest Percolating Path           : -0.4035
+   Moran's I                           : -0.4009
+   Normalized Mean Cluster Size        : -0.3924
+   Betti 0                             : -0.3587
+   Mean Aspect Ratio                   : -0.1508
+   Fractal Dimension                   : +0.0167
+
+--- STRONG COLLINEARITIES (|r| > 0.9) ---
+Variables showing redundant physical behaviors.
+
+>> SCOPE: GLOBAL
+   [Spearman |rho| > 0.9]
+      None
+   [Pearson |r| > 0.9]
+      None
+
+>> SCOPE: UNIFORM
+   [Spearman |rho| > 0.9]
+      +0.970 : Betti 1 <--> Mean Aspect Ratio
+      +0.907 : Betti 0 <--> Fractal Dimension
+   [Pearson |r| > 0.9]
+      None
+
+>> SCOPE: COMPACT
+   [Spearman |rho| > 0.9]
+      None
+   [Pearson |r| > 0.9]
+      None
+
+>> SCOPE: DIFFUSE
+   [Spearman |rho| > 0.9]
+      +0.984 : Betti 0 <--> Fractal Dimension
+      -0.957 : Moran's I <--> Fractal Dimension
+      -0.939 : Betti 0 <--> Moran's I
+      -0.921 : Fractal Dimension <--> Mean Aspect Ratio
+      +0.900 : Moran's I <--> Mean Aspect Ratio
+   [Pearson |r| > 0.9]
+      -0.920 : Betti 0 <--> Moran's I
+
+>> SCOPE: INTERSTITIAL
+   [Spearman |rho| > 0.9]
+      +0.983 : Betti 0 <--> Fractal Dimension
+      -0.963 : Moran's I <--> Fractal Dimension
+      -0.945 : Betti 0 <--> Moran's I
+   [Pearson |r| > 0.9]
+      -0.910 : Betti 0 <--> Moran's I
+
+>> SCOPE: PATCHY
+   [Spearman |rho| > 0.9]
+      +0.985 : Betti 0 <--> Fractal Dimension
+      -0.931 : Moran's I <--> Fractal Dimension
+      -0.912 : Betti 0 <--> Moran's I
+      -0.908 : Fractal Dimension <--> Mean Aspect Ratio
+      -0.902 : Betti 0 <--> Mean Aspect Ratio
+   [Pearson |r| > 0.9]
+      None
+
+--- POINT-BISERIAL CORRELATION (UNIVARIATE) ---
+Evaluates the predictive strength of individual structural metrics against Sustained Reentry.
+Interpretation of the r_pb coefficient:
+ - Positive (+) values : Higher metric values increase the chance of reentry (Risk factor).
+ - Negative (-) values : Higher metric values decrease the chance of reentry (Protective factor).
+ - Magnitude (|r_pb|)  : Values closer to 1.0 or -1.0 indicate strong separation between outcomes.
+
+   Betti 1                             : r_pb =  0.177  |  p-val = 5.81e-265 [***]
+   Topological Conduction Efficiency   : r_pb = -0.145  |  p-val = 7.85e-81 [***]
+   Shortest Percolating Path           : r_pb =  0.117  |  p-val = 5.17e-53 [***]
+   Mean Aspect Ratio                   : r_pb =  0.083  |  p-val = 2.77e-59 [***]
+   Betti 0                             : r_pb = -0.081  |  p-val = 6.56e-57 [***]
+   Moran's I                           : r_pb = -0.077  |  p-val = 3.61e-51 [***]
+   Fractal Dimension                   : r_pb =  0.060  |  p-val = 1.88e-31 [***]
+   Normalized Mean Cluster Size        : r_pb = -0.030  |  p-val = 1.03e-08 [***]
