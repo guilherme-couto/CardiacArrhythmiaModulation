@@ -68,7 +68,7 @@ def get_metric_categories(dim_mode):
         },
         "Topology_and_Homology": {
             "betti_0": r"Betti 0 ($\beta_0$: Connected Components)",
-            "betti_1": r"Betti 1 ($\beta_1$: Tunnels/Holes)"
+            "betti_1": r"Betti 1 ($\beta_1$: 1D Loops)"
         },
         "Connectivity_and_Conduction": {
             "min_path_x": "Shortest Percolating Path Length",
@@ -403,7 +403,7 @@ def build_txt_report(df, thresholds, decay_stats, out_dir, dim_mode):
     report.append("Moran's I: Global spatial autocorrelation. +1.0 = highly clustered, 0.0 = random noise.")
     report.append("Fractal Dimension: Measures the complexity and space-filling capacity of the fibrosis boundaries.")
     report.append("Betti 0: Number of connected healthy tissue components.")
-    report.append("Betti 1: Number of tunnels/holes (fibrotic islands) inside the healthy tissue.")
+    report.append("Betti 1: Number of 1D healthy loops (fibrotic islands) inside the healthy tissue.")
     report.append("Betti 2 (3D only): Number of enclosed voids (fully enclosed fibrotic pockets) in the healthy tissue.")
     report.append("Topological Conduction Efficiency (TCE): The structural speed limit of the mesh (Linear Length / Average Percolating Path Length).")
     report.append("Shortest Percolating Path: The absolute minimal steps required to cross the domain X-axis.")

@@ -1,0 +1,49 @@
+==========================================================
+ AGGREGATED STRUCTURAL GAM ANALYSIS REPORT
+ SCENARIO: Scenario I 
+==========================================================
+Models fitted using quasibinomial GAM on data aggregated purely
+by Density, creating a universal, phenotype-agnostic risk map.
+The predictor is the MEAN of the metric across all geometries,
+and the outcome is the EMPIRICAL PROBABILITY of sustained reentry.
+
+
+>> Evaluating Metric: Norm. Mean Cluster Size ( norm_mean_cluster_size )
+   P-value            : 9.71e-02 [ns]
+   Deviance Explained : 38.63%
+   Non-linearity (EDF): 2.00 (1 = Linear, >1 = Non-linear)
+
+>> Evaluating Metric: Mean Aspect Ratio ( mean_aspect_ratio )
+   P-value            : 3.88e-02 [*]
+   Deviance Explained : 72.89%
+   Non-linearity (EDF): 2.48 (1 = Linear, >1 = Non-linear)
+
+>> Evaluating Metric: Fractal Dimension ( fractal_dimension )
+   P-value            : 0.00e+00 [***]
+   Deviance Explained : 94.40%
+   Non-linearity (EDF): 2.90 (1 = Linear, >1 = Non-linear)
+
+>> Evaluating Metric: Moran's I ( morans_i )
+   P-value            : 1.32e-04 [***]
+   Deviance Explained : 85.82%
+   Non-linearity (EDF): 2.32 (1 = Linear, >1 = Non-linear)
+
+>> Evaluating Metric: Betti 0 ( betti_0 )
+   P-value            : 7.86e-05 [***]
+   Deviance Explained : 84.65%
+   Non-linearity (EDF): 3.00 (1 = Linear, >1 = Non-linear)
+
+>> Evaluating Metric: Betti 1 ( betti_1 )
+   P-value            : 3.25e-03 [**]
+   Deviance Explained : 81.78%
+   Non-linearity (EDF): 1.71 (1 = Linear, >1 = Non-linear)
+
+>> Evaluating Metric: TCE ( topological_conduction_eff )
+   P-value            : 3.45e-02 [*]
+   Deviance Explained : 72.74%
+   Non-linearity (EDF): 2.07 (1 = Linear, >1 = Non-linear)
+
+>> Evaluating Metric: Shortest Perc. Path ( min_path_x )
+   P-value            : 3.72e-02 [*]
+   Deviance Explained : 70.55%
+   Non-linearity (EDF): 2.15 (1 = Linear, >1 = Non-linear)

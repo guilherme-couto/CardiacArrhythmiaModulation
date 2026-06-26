@@ -2,13 +2,13 @@
   FIBROSTRUCT 2D: COMPREHENSIVE STATISTICAL REPORT
 =========================================================
 
---- GLOSSARY OF METRICS ---
+GLOSSARY OF METRICS
 Normalized Mean Cluster Size: The mass-weighted average size of finite obstacle clusters normalized by the total voxel volume. Excludes the largest cluster.
 Mean Aspect Ratio: Bounding box geometric stretch (Length / Width) of the clusters weighted by their area.
 Moran's I: Global spatial autocorrelation. +1.0 = highly clustered, 0.0 = random noise.
 Fractal Dimension: Measures the complexity and space-filling capacity of the fibrosis boundaries.
 Betti 0: Number of connected healthy tissue components.
-Betti 1: Number of tunnels/holes (fibrotic islands) inside the healthy tissue.
+Betti 1: Number of 1D healthy loops (fibrotic islands) inside the healthy tissue.
 Betti 2 (3D only): Number of enclosed voids (fully enclosed fibrotic pockets) in the healthy tissue.
 Topological Conduction Efficiency (TCE): The structural speed limit of the mesh (Linear Length / Average Percolating Path Length).
 Shortest Percolating Path: The absolute minimal steps required to cross the domain X-axis.
@@ -67,7 +67,7 @@ Aggregated mathematical overview comparing fibrosis types for each structural me
    Interstitial    | Mean:     1000.634 | Std:      875.476 | Valid N: 7600
    Patchy          | Mean:      525.382 | Std:      463.209 | Valid N: 7600
 
->> BETTI 1 ($\BETA_1$: TUNNELS/HOLES) (betti_1)
+>> BETTI 1 ($\BETA_1$: 1D LOOPS) (betti_1)
    Uniform         | Mean:     9007.255 | Std:     7768.471 | Valid N: 7600
    Compact         | Mean:       11.598 | Std:        7.970 | Valid N: 7600
    Diffuse         | Mean:     1638.969 | Std:     1064.807 | Valid N: 7600

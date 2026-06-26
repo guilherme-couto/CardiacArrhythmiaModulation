@@ -1,0 +1,62 @@
+# Simulation outputs (large, generated at runtime)
+simulation_batches*/
+simulation_output*/
+alg_meshes/
+outputs/
+
+# Generated mesh files
+*.alg
+
+# MonoAlg3D build artifacts
+MonoAlg3D_C/bin/
+MonoAlg3D_C/shared_libs/
+MonoAlg3D_C/build/
+MonoAlg3D_C/*.o
+MonoAlg3D_C/*.so
+
+# Compiled MEX files (regenerated via mkoctfile)
+perlin-fibrosis-generator/helpers/*.mexa64
+# Note: .mex files already compiled for Linux x86-64 are tracked as-is
+# Recompile with: mkoctfile --mex Octave2D.cpp  Octave3D.cpp
+
+# Python cache
+__pycache__/
+*.py[cod]
+*.pyo
+.ipynb_checkpoints/
+
+# Python environments
+.env
+.venv
+env/
+venv/
+
+# Jupyter
+*.ipynb
+
+# R outputs
+.Rhistory
+.RData
+.Rproj.user/
+*.Rproj
+
+# OS metadata
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editors
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Logs (runtime, not archived results)
+logs/
+*.log
+
+# Large data not meant for version control
+*.h5
+*.hdf5
+*.nc

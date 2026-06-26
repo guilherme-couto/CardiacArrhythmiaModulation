@@ -76,7 +76,7 @@ dir.create(output_dir, recursive = TRUE, showWarnings = FALSE)
 plots_dir <- file.path(output_dir, "plots")
 dir.create(plots_dir, recursive = TRUE, showWarnings = FALSE)
 
-cat("--- STARTING STATISTICAL ANALYSIS FOR", scenario_name, "---\n")
+cat("STARTING STATISTICAL ANALYSIS FOR", scenario_name, "\n")
 
 data <- read.csv(file_path)
 data$fibrosis_type <- capitalize(trimws(as.character(data$fibrosis_type)))

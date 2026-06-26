@@ -279,7 +279,7 @@ def create_txt_report(df, metrics, pca, loadings, flattened_corr_df, out_dir, sc
     
     if pca is not None and loadings is not None:
         var = pca.explained_variance_ratio_
-        lines.extend(["--- PRINCIPAL COMPONENT ANALYSIS (PCA)",
+        lines.extend(["PRINCIPAL COMPONENT ANALYSIS (PCA)",
                       f"Total variance explained by PC1 and PC2: {(var[0]+var[1])*100:.2f}%\n"])
         for idx, pc in enumerate(['PC1', 'PC2']):
             lines.append(f">> {pc} Contributions (Explains {var[idx]*100:.2f}% of variance):")
@@ -288,7 +288,7 @@ def create_txt_report(df, metrics, pca, loadings, flattened_corr_df, out_dir, sc
                 lines.append(f"   {metric.ljust(35)} : {val:+.4f}")
             lines.append("")
             
-    lines.extend(["--- STRONG COLLINEARITIES (|r| > 0.9)",
+    lines.extend(["STRONG COLLINEARITIES (|r| > 0.9)",
                   "Variables showing redundant physical behaviors.\n"])
     scopes = flattened_corr_df['Scope'].unique()
     for scope in scopes:
@@ -308,7 +308,7 @@ def create_txt_report(df, metrics, pca, loadings, flattened_corr_df, out_dir, sc
             lines.append(f"      {row['Pearson_R']:+.3f} : {clean_name(row['Metric_1'])} <--> {clean_name(row['Metric_2'])}")
         lines.append("")
 
-    lines.extend(["--- POINT-BISERIAL CORRELATION (UNIVARIATE)",
+    lines.extend(["POINT-BISERIAL CORRELATION (UNIVARIATE)",
                   "Evaluates the predictive strength of individual structural metrics against Sustained Reentry.",
                   "Interpretation of the r_pb coefficient:",
                   " - Positive (+) values : Higher metric values increase the chance of reentry (Risk factor).",

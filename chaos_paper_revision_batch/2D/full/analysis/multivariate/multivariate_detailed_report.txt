@@ -2,7 +2,7 @@
  MULTIVARIATE ANALYSIS DETAILED REPORT - SCENARIO I
 ======================================================================================
 
---- PRINCIPAL COMPONENT ANALYSIS (PCA) ---
+PRINCIPAL COMPONENT ANALYSIS (PCA)
 Total variance explained by PC1 and PC2: 61.97%
 
 >> PC1 Contributions (Explains 35.16% of variance):
@@ -25,7 +25,7 @@ Total variance explained by PC1 and PC2: 61.97%
    Mean Aspect Ratio                   : -0.1508
    Fractal Dimension                   : +0.0167
 
---- STRONG COLLINEARITIES (|r| > 0.9) ---
+STRONG COLLINEARITIES (|r| > 0.9)
 Variables showing redundant physical behaviors.
 
 >> SCOPE: GLOBAL
@@ -75,7 +75,7 @@ Variables showing redundant physical behaviors.
    [Pearson |r| > 0.9]
       None
 
---- POINT-BISERIAL CORRELATION (UNIVARIATE) ---
+POINT-BISERIAL CORRELATION (UNIVARIATE)
 Evaluates the predictive strength of individual structural metrics against Sustained Reentry.
 Interpretation of the r_pb coefficient:
  - Positive (+) values : Higher metric values increase the chance of reentry (Risk factor).

@@ -1,0 +1,53 @@
+==========================================================
+ CONTINUOUS STRUCTURAL GAM ANALYSIS REPORT
+ SCENARIO: Scenario I 
+==========================================================
+Models fitted using binomial GAM (logit link) to evaluate the
+non-linear influence of individual structural metrics on reentry.
+
+
+>> Evaluating Metric: Fibrosis Density ( density )
+   P-value            : 0.00e+00 [***]
+   Deviance Explained : 26.56%
+   Non-linearity (EDF): 2.97 (1 = Linear, >1 = Non-linear)
+
+>> Evaluating Metric: Normalized Mean Cluster Size ( norm_mean_cluster_size )
+   P-value            : 0.00e+00 [***]
+   Deviance Explained : 6.59%
+   Non-linearity (EDF): 3.93 (1 = Linear, >1 = Non-linear)
+
+>> Evaluating Metric: Mean Aspect Ratio ( mean_aspect_ratio )
+   P-value            : 0.00e+00 [***]
+   Deviance Explained : 15.35%
+   Non-linearity (EDF): 3.94 (1 = Linear, >1 = Non-linear)
+
+>> Evaluating Metric: Fractal Dimension ( fractal_dimension )
+   P-value            : 0.00e+00 [***]
+   Deviance Explained : 5.49%
+   Non-linearity (EDF): 3.92 (1 = Linear, >1 = Non-linear)
+
+>> Evaluating Metric: Moran's I (Spatial Autocorrelation) ( morans_i )
+   P-value            : 0.00e+00 [***]
+   Deviance Explained : 4.92%
+   Non-linearity (EDF): 3.77 (1 = Linear, >1 = Non-linear)
+
+>> Evaluating Metric: Betti 0 (Healthy Components) ( betti_0 )
+   P-value            : 0.00e+00 [***]
+   Deviance Explained : 13.80%
+   Non-linearity (EDF): 3.04 (1 = Linear, >1 = Non-linear)
+
+>> Evaluating Metric: Betti 1 (1D Loops) ( betti_1 )
+   P-value            : 0.00e+00 [***]
+   Deviance Explained : 20.46%
+   Non-linearity (EDF): 3.95 (1 = Linear, >1 = Non-linear)
+[!] Skipping betti_2: Insufficient variance or valid samples.
+
+>> Evaluating Metric: Topological Conduction Efficiency ( topological_conduction_eff )
+   P-value            : 0.00e+00 [***]
+   Deviance Explained : 7.79%
+   Non-linearity (EDF): 3.80 (1 = Linear, >1 = Non-linear)
+
+>> Evaluating Metric: Shortest Percolating Path ( min_path_x )
+   P-value            : 0.00e+00 [***]
+   Deviance Explained : 8.20%
+   Non-linearity (EDF): 3.91 (1 = Linear, >1 = Non-linear)
