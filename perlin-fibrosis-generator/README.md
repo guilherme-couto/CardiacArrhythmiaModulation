@@ -1,8 +1,5 @@
-# Fibrosis Generator Framework
-**High-Performance Cardiac Fibrosis Pattern Generator (2D & 3D)**
-
 ## 1. Overview
-The **Fibrosis Generator Framework** is a computational framework designed to create realistic cardiac fibrosis patterns for electrophysiological simulations. It operates on a **Geometry-Noise-Threshold** pipeline.
+A computational framework designed to create histology-inspired cardiac fibrosis patterns for electrophysiological simulations. It operates on a **Geometry-Noise-Threshold** pipeline.
 
 The core engine is written in **GNU Octave** (MATLAB compatible) for high-speed matrix operations, orchestrated via **Python** for advanced visualization.
 
