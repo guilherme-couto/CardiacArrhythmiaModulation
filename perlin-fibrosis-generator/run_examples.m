@@ -1,5 +1,5 @@
 clc;
-fprintf("Initializing GNT Framework...\n\n");
+fprintf("Initializing Fibrosis Generator Framework...\n\n");
 
 % --- SCENARIO 1: 2D Diffuse Full ---
 % Domain: dx=0.01, 4x4 cm

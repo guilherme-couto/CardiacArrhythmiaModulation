@@ -224,18 +224,6 @@ This produces 4 example meshes (2D and 3D) in `perlin-fibrosis-generator/example
 
 ---
 
-## Pre-computed Results
-
-The directory `chaos_paper_revision_batch/2D/full/` contains the pre-computed results for **Scenario I** (2D tissue slab, `shape=full`), as reported in the associated article. It includes:
-
-- `data/master_dataset.csv` — Full simulation dataset (fibrosis metrics + EP outcomes)
-- `analysis/structure/` — Structural metric distributions, percolation thresholds, point plots
-- `analysis/empirical/` — Vulnerability window curves and Gantt-style plots
-- `analysis/statistical_models/` — Odds ratio forest plots and GAM model fits
-- `analysis/multivariate/` — PCA biplots, KDE maps, correlation matrices, boxplots, probability curves
-
----
-
 ## Structural Metrics Computed
 
 For each simulated mesh, the following metrics are extracted:
@@ -248,6 +236,7 @@ For each simulated mesh, the following metrics are extracted:
 | `morans_i` | Texture | Spatial autocorrelation (Moran's I) with inverse-distance weighting (radius = 2 cells) |
 | `betti_0` | Topology | Number of connected components of the conduction network (Betti-0) |
 | `betti_1` | Topology | Number of independent loops in the conduction network (Betti-1) |
+| `betti_2` | Topology | Number of encapsulated fibrosis in the conduction network (Betti-2) |
 | `percolates_x` | Connectivity | Binary: whether a conduction path exists from left to right border |
 | `min_path_x` | Connectivity | Length of the shortest conduction path (BFS, Von Neumann neighborhood) |
 | `topological_conduction_eff` | Connectivity | Grid width divided by mean path length (tortuosity-based efficiency) |
@@ -256,7 +245,7 @@ For each simulated mesh, the following metrics are extracted:
 
 ## Reproducibility
 
-All stochastic elements are seeded deterministically. The master seed for the numpy RNG is `20260101`, from which all per-simulation seeds are drawn. Results in `chaos_paper_revision_batch/` can be reproduced by running the full pipeline with the parameters in the associated article's Methods section.
+All stochastic elements are seeded deterministically. The master seed for the numpy RNG is `20260101`, from which all per-simulation seeds are drawn. Results in `chaos_paper_revision_batch/` can be reproduced by running the full pipeline with the parameters in the associated article's methods section.
 
 This repository is archived on Zenodo:
 > *[Zenodo DOI — to be updated upon release]*
@@ -269,7 +258,7 @@ The CAM framework scripts (`scripts/`, `perlin-fibrosis-generator/`) are distrib
 
 `MonoAlg3D_C/` is distributed under the **GPL-2.0 License** by its original authors (Oliveira RS et al.). See [`MonoAlg3D_C/LICENSE`](MonoAlg3D_C/LICENSE).
 
-The GNT fibrosis generator is derived from [`betalawson/perlin-microfibrosis`](https://github.com/betalawson/perlin-microfibrosis) (Lawson et al., 2024).
+The fibrosis generator is derived from [`betalawson/perlin-microfibrosis`](https://github.com/betalawson/perlin-microfibrosis) (Lawson et al., 2024).
 
 ---
 
@@ -279,10 +268,10 @@ If you use this framework or the pre-computed data, please cite:
 
 ```bibtex
 @article{cam2025,
-  author  = {[Author list]},
-  title   = {[Article title]},
+  author  = {[TODO]},
+  title   = {[TODO]},
   journal = {[Journal]},
-  year    = {2025},
+  year    = {2026},
   doi     = {[DOI]}
 }
 ```
@@ -290,27 +279,32 @@ If you use this framework or the pre-computed data, please cite:
 And the MonoAlg3D solver:
 
 ```bibtex
-@article{oliveira2018monoalg,
-  author  = {Oliveira, Rafael Sachetto and others},
-  title   = {Performance evaluation of {GPU} parallelization, space-time adaptive algorithms, and their combination for simulating cardiac electrophysiology},
-  journal = {International Journal for Numerical Methods in Biomedical Engineering},
-  year    = {2018},
-  volume  = {34},
-  pages   = {e2913},
-  doi     = {10.1002/cnm.2913}
+@article{sachetto2018performance,
+  title={Performance evaluation of GPU parallelization, space-time adaptive algorithms, and their combination for simulating cardiac electrophysiology},
+  author={Sachetto Oliveira, Rafael and Martins Rocha, Bernardo and Burgarelli, Denise and Meira Jr, Wagner and Constantinides, Christakis and Weber dos Santos, Rodrigo},
+  journal={International journal for numerical methods in biomedical engineering},
+  volume={34},
+  number={2},
+  pages={e2913},
+  year={2018},
+  publisher={Wiley Online Library},
+  doi={https://doi.org/10.1002/cnm.2913}
 }
+
 ```
 
-And the Perlin fibrosis model:
+And the Perlin fibrosis generator:
 
 ```bibtex
 @article{lawson2024perlin,
-  author  = {Lawson, Brodie A.J. and others},
-  title   = {Perlin noise generation of physiologically realistic patterns of cardiac fibrosis},
-  journal = {Medical Image Analysis},
-  year    = {2024},
-  volume  = {98},
-  pages   = {103240},
-  doi     = {10.1016/j.media.2024.103240}
+  title={Perlin noise generation of physiologically realistic cardiac fibrosis},
+  author={Lawson, Brodie AJ and Drovandi, Christopher and Burrage, Pamela and Bueno-Orovio, Alfonso and Dos Santos, Rodrigo Weber and Rodriguez, Blanca and Mengersen, Kerrie and Burrage, Kevin},
+  journal={Medical Image Analysis},
+  volume={98},
+  pages={103240},
+  year={2024},
+  publisher={Elsevier},
+  doi={https://doi.org/10.1016/j.media.2024.103240}
 }
+
 ```

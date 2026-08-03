@@ -1,0 +1,113 @@
+=========================================================
+  FIBROSTRUCT 3D: COMPREHENSIVE STATISTICAL REPORT
+=========================================================
+
+GLOSSARY OF METRICS
+Normalized Mean Cluster Size: The mass-weighted average size of finite obstacle clusters normalized by the total voxel volume. Excludes the largest cluster.
+Mean Aspect Ratio: Bounding box geometric stretch (Length / Width) of the clusters weighted by their area.
+Moran's I: Global spatial autocorrelation. +1.0 = highly clustered, 0.0 = random noise.
+Fractal Dimension: Measures the complexity and space-filling capacity of the fibrosis boundaries.
+Betti 0: Number of connected healthy tissue components.
+Betti 1: Number of 1D healthy loops (fibrotic islands) inside the healthy tissue.
+Betti 2 (3D only): Number of enclosed voids (fully enclosed fibrotic pockets) in the healthy tissue.
+Topological Conduction Efficiency (TCE): The structural speed limit of the mesh (Linear Length / Average Percolating Path Length).
+Shortest Percolating Path: The absolute minimal steps required to cross the domain X-axis.
+
+
+1. 3D PERCOLATION THRESHOLDS (pc) AND DECAY KINEMATICS
+-----------------------------------------------------------------
+pc (Threshold): The exact density where probability of conduction hits 50%.
+Transition Window: Density window required for the curve to drop from 90% to 10% connectivity (smaller = more abrupt transition).
+
+
+   Uniform         : pc = 0.675  |  Transition Window (90% to 10%) = 0.011  |  Max Slope = 102.149
+   Compact         : pc = 0.864  |  Transition Window (90% to 10%) = 0.378  |  Max Slope = 2.910
+   Diffuse         : pc = 0.861  |  Transition Window (90% to 10%) = 0.045  |  Max Slope = 24.233
+   Interstitial    : pc = 0.885  |  Transition Window (90% to 10%) = 0.057  |  Max Slope = 19.285
+   Patchy          : pc = 0.902  |  Transition Window (90% to 10%) = 0.090  |  Max Slope = 12.173
+
+
+2. GENERAL DESCRIPTIVE STATISTICS PER METRIC
+-----------------------------------------------------------------
+Aggregated mathematical overview comparing fibrosis types for each structural metric (Excludes invalid/failed samples).
+
+
+>> NORMALIZED MEAN CLUSTER SIZE ($\HAT{S}$) (norm_mean_cluster_size)
+   Uniform         | Mean:        0.000 | Std:        0.000 | Valid N: 4512
+   Compact         | Mean:        0.008 | Std:        0.018 | Valid N: 6675
+   Diffuse         | Mean:        0.000 | Std:        0.001 | Valid N: 7070
+   Interstitial    | Mean:        0.001 | Std:        0.002 | Valid N: 7398
+   Patchy          | Mean:        0.001 | Std:        0.004 | Valid N: 7544
+
+>> MEAN ASPECT RATIO (mean_aspect_ratio)
+   Uniform         | Mean:        1.080 | Std:        0.191 | Valid N: 7600
+   Compact         | Mean:        1.199 | Std:        0.414 | Valid N: 7600
+   Diffuse         | Mean:        1.108 | Std:        0.272 | Valid N: 7600
+   Interstitial    | Mean:        1.183 | Std:        0.588 | Valid N: 7600
+   Patchy          | Mean:        1.310 | Std:        0.928 | Valid N: 7600
+
+>> MORAN'S I (SPATIAL AUTOCORRELATION) (morans_i)
+   Uniform         | Mean:        0.000 | Std:        0.000 | Valid N: 7600
+   Compact         | Mean:        0.877 | Std:        0.028 | Valid N: 7600
+   Diffuse         | Mean:        0.228 | Std:        0.058 | Valid N: 7600
+   Interstitial    | Mean:        0.334 | Std:        0.074 | Valid N: 7600
+   Patchy          | Mean:        0.467 | Std:        0.082 | Valid N: 7600
+
+>> FRACTAL DIMENSION ($D_F$) (fractal_dimension)
+   Uniform         | Mean:        2.696 | Std:        0.002 | Valid N: 7600
+   Compact         | Mean:        2.448 | Std:        0.222 | Valid N: 7600
+   Diffuse         | Mean:        2.666 | Std:        0.068 | Valid N: 7600
+   Interstitial    | Mean:        2.642 | Std:        0.105 | Valid N: 7600
+   Patchy          | Mean:        2.601 | Std:        0.153 | Valid N: 7600
+
+>> BETTI 0 ($\BETA_0$: CONNECTED COMPONENTS) (betti_0)
+   Uniform         | Mean:     2243.831 | Std:     5877.004 | Valid N: 7600
+   Compact         | Mean:        6.521 | Std:        4.658 | Valid N: 7600
+   Diffuse         | Mean:      955.818 | Std:     1643.208 | Valid N: 7600
+   Interstitial    | Mean:      732.243 | Std:     1053.147 | Valid N: 7600
+   Patchy          | Mean:      352.487 | Std:      450.554 | Valid N: 7600
+
+>> BETTI 1 ($\BETA_1$: 1D LOOPS) (betti_1)
+   Uniform         | Mean:    40028.853 | Std:    41850.158 | Valid N: 7600
+   Compact         | Mean:       10.862 | Std:        7.055 | Valid N: 7600
+   Diffuse         | Mean:     7780.114 | Std:     5041.384 | Valid N: 7600
+   Interstitial    | Mean:     5008.714 | Std:     2948.538 | Valid N: 7600
+   Patchy          | Mean:     1595.532 | Std:      933.702 | Valid N: 7600
+
+>> BETTI 2 ($\BETA_2$: ENCLOSED VOIDS) (betti_2)
+   Uniform         | Mean:    25041.399 | Std:    29165.411 | Valid N: 7600
+   Compact         | Mean:        2.082 | Std:        2.320 | Valid N: 7600
+   Diffuse         | Mean:     2121.389 | Std:     1498.502 | Valid N: 7600
+   Interstitial    | Mean:     1544.031 | Std:      958.482 | Valid N: 7600
+   Patchy          | Mean:      395.452 | Std:      246.661 | Valid N: 7600
+
+>> SHORTEST PERCOLATING PATH LENGTH (min_path_x)
+   Uniform         | Mean:      122.438 | Std:       26.278 | Valid N: 5200
+   Compact         | Mean:      102.201 | Std:       11.539 | Valid N: 6558
+   Diffuse         | Mean:      116.246 | Std:       29.471 | Valid N: 6706
+   Interstitial    | Mean:      116.104 | Std:       31.259 | Valid N: 6873
+   Patchy          | Mean:      113.975 | Std:       30.252 | Valid N: 7030
+
+>> TOPOLOGICAL CONDUCTION EFFICIENCY (TCE) (topological_conduction_eff)
+   Uniform         | Mean:        0.794 | Std:        0.158 | Valid N: 5200
+   Compact         | Mean:        0.855 | Std:        0.125 | Valid N: 6558
+   Diffuse         | Mean:        0.801 | Std:        0.162 | Valid N: 6706
+   Interstitial    | Mean:        0.803 | Std:        0.166 | Valid N: 6873
+   Patchy          | Mean:        0.808 | Std:        0.167 | Valid N: 7030
+
+
+3. STATISTICAL SIGNIFICANCE (Kruskal-Wallis H-test across Fibrosis Types)
+-----------------------------------------------------------------
+Null hypothesis: Medians of all groups are equal (alpha = 0.05).
+If p-value < 0.05, the fibrosis phenotype significantly alters the metric.
+
+norm_mean_cluster_size         | H-stat:     11862.86 | p-value:     0.00e+00 [***]
+mean_aspect_ratio              | H-stat:      3873.29 | p-value:     0.00e+00 [***]
+morans_i                       | H-stat:     34467.41 | p-value:     0.00e+00 [***]
+fractal_dimension              | H-stat:     20235.18 | p-value:     0.00e+00 [***]
+betti_0                        | H-stat:     10440.01 | p-value:     0.00e+00 [***]
+betti_1                        | H-stat:     20765.58 | p-value:     0.00e+00 [***]
+betti_2                        | H-stat:     20838.27 | p-value:     0.00e+00 [***]
+min_path_x                     | H-stat:      6638.88 | p-value:     0.00e+00 [***]
+topological_conduction_eff     | H-stat:       569.15 | p-value:    7.35e-122 [***]
+
