@@ -43,7 +43,7 @@ cbind(successes, failures) ~ fibrosis_type + s(density, by = fibrosis_type,
 
 Parametric coefficients:
                           Estimate Std. Error t value Pr(>|t|)    
-(Intercept)                -252.65      17.77  -14.22 9.88e-16 ***
+(Intercept)                -252.66      17.77  -14.22 9.88e-16 ***
 fibrosis_typeDiffuse        248.55      17.77   13.98 1.58e-15 ***
 fibrosis_typeInterstitial   247.92      17.77   13.95 1.71e-15 ***
 fibrosis_typePatchy         247.88      17.77   13.95 1.71e-15 ***
@@ -53,7 +53,7 @@ Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’
 Approximate significance of smooth terms:
                                        edf Ref.df      F p-value    
 s(density):fibrosis_typeUniform      3.996  4.000  95.09  <2e-16 ***
-s(density):fibrosis_typeDiffuse      3.514  3.862 112.89  <2e-16 ***
+s(density):fibrosis_typeDiffuse      3.514  3.862 122.40  <2e-16 ***
 s(density):fibrosis_typeInterstitial 3.730  3.950  67.62  <2e-16 ***
 s(density):fibrosis_typePatchy       3.331  3.751  35.35  <2e-16 ***
 ---
@@ -88,10 +88,10 @@ fibrosis_typePatchy        -0.6666     0.2871  -2.321   0.0285 *
 Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
 
 Approximate significance of smooth terms:
-                                       edf Ref.df     F p-value    
-s(density):fibrosis_typeDiffuse      3.446  3.823 98.61  <2e-16 ***
-s(density):fibrosis_typeInterstitial 3.647  3.918 61.42  <2e-16 ***
-s(density):fibrosis_typePatchy       3.226  3.678 31.85  <2e-16 ***
+                                       edf Ref.df      F p-value    
+s(density):fibrosis_typeDiffuse      3.446  3.823 106.96  <2e-16 ***
+s(density):fibrosis_typeInterstitial 3.647  3.918  61.42  <2e-16 ***
+s(density):fibrosis_typePatchy       3.226  3.678  31.85  <2e-16 ***
 ---
 Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
 

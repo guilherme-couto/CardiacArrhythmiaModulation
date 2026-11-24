@@ -1,7 +1,3 @@
-"""
-Core utility module for FibroStruct.
-Contains morphological and topological functions.
-"""
 import gudhi
 import numpy as np
 from collections import deque
@@ -14,7 +10,6 @@ def calculate_cluster_metrics(fibrosis_mask):
     """
     Calculates Normalized Mean Cluster Size and Mean Aspect Ratio.
     Connectivity: Fully connected (Moore neighborhood, 8-way in 2D, 26-way in 3D).
-    Note: The largest cluster is ALWAYS excluded from the mean size calculation.
     """
     f_labels = ski_label(fibrosis_mask, connectivity=2)
     f_props = regionprops(f_labels)
@@ -112,8 +107,7 @@ def calculate_morans_i(fibrosis_mask):
 
 def calculate_betti_numbers(fibrosis_mask, dim_mode):
     """
-    Computes Persistent Homology Betti Numbers using Gudhi Cubical Complex.
-    Filtration: Healthy tissue (0.0) -> Space; Fibrosis (1.0) -> Obstacles/Holes.
+    Computes Persistent Homology Betti Numbers using Cubical Complex.
     """
     try:
         filt_array = np.where(fibrosis_mask == 0, 0.0, 1.0)
@@ -133,7 +127,6 @@ def run_bfs_x(healthy_mask, reconstruct_paths=False):
     """
     Executes Breadth-First Search strictly from Left (X=0) to Right (X=max).
     Connectivity: Von Neumann (4-way in 2D, 6-way in 3D).
-    Returns percolation boolean, min path length, average path length, and visualization masks.
     """
     ndim = healthy_mask.ndim
     queue = deque()

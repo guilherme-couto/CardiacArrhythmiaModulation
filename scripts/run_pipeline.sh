@@ -30,26 +30,44 @@ if [ ! -f "$MASTER_CSV" ]; then
     exit 1
 fi
 
-# 1. Execute Dataset Sorting and Wrangling (sort_dataset.py)
-echo "[1/5] Sorting Master Dataset..."
-python3 scripts/organize_dataset.py --csv_path "$MASTER_CSV"
+# Different pipelines for shape full or not full
+if [ "$SHAPE" == "full" ]; then
+    # 1. Execute Dataset Sorting and Wrangling (sort_dataset.py)
+    echo "[1/5] Sorting Master Dataset..."
+    python3 scripts/organize_dataset.py --csv_path "$MASTER_CSV"
 
-# 2. Execute Structural Analysis (analyze_structure.py)
-echo -e "\n[2/5] Running Structural & Topological Analysis..."
-python3 scripts/analyze_structure.py --batch_dir "$BATCH_DIR" --dim "$DIM" --shape "$SHAPE"
+    # 2. Execute Structural Analysis (analyze_structure.py)
+    echo -e "\n[2/5] Running Structural & Topological Analysis..."
+    python3 scripts/analyze_structure.py --batch_dir "$BATCH_DIR" --dim "$DIM" --shape "$SHAPE"
 
-# 3. Execute Functional Analysis & Pre-processing (analyze_function.py)
-echo -e "\n[3/5] Running Empirical Analysis (EP) & GAM Data Prep..."
-python3 scripts/analyze_empirical.py --batch_dir "$BATCH_DIR" --dim "$DIM" --shape "$SHAPE"
+    # 3. Execute Functional Analysis & Pre-processing (analyze_function.py)
+    echo -e "\n[3/5] Running Empirical Analysis (EP) & GAM Data Prep..."
+    python3 scripts/analyze_empirical.py --batch_dir "$BATCH_DIR" --dim "$DIM" --shape "$SHAPE"
 
-# 4. Execute Statistical Modeling (statistical_models.R)
-# It will look for data_for_gam_r.csv inside the empirical output folder
-echo -e "\n[4/5] Running R Statistics (Firth and GAM Models)..."
-Rscript scripts/statistical_models.R "$BATCH_DIR" "$DIM" "$SHAPE"
+    # 4. Execute Statistical Modeling (statistical_models.R)
+    # It will look for data_for_gam_r.csv inside the empirical output folder
+    echo -e "\n[4/5] Running R Statistics (Firth and GAM Models)..."
+    Rscript scripts/statistical_models.R "$BATCH_DIR" "$DIM" "$SHAPE"
 
-# 5. Execute Multivariate Analysis (multivariate_analysis.py)
-echo -e "\n[5/5] Running Multivariate Analysis..."
-python3 scripts/multivariate_analysis.py --batch_dir "$BATCH_DIR" --dim "$DIM" --shape "$SHAPE"
+    # 5. Execute Multivariate Analysis (multivariate_analysis.py)
+    echo -e "\n[5/5] Running Multivariate Analysis..."
+    python3 scripts/multivariate_analysis.py --batch_dir "$BATCH_DIR" --dim "$DIM" --shape "$SHAPE"
+else
+    # 1. Execute Dataset Sorting and Wrangling (sort_dataset.py)
+    echo "[1/3] Sorting Master Dataset..."
+    python3 scripts/organize_dataset.py --csv_path "$MASTER_CSV"
+
+    # 3. Execute Functional Analysis & Pre-processing (analyze_function.py)
+    echo -e "\n[2/3] Running Empirical Analysis (EP) & GAM Data Prep..."
+    python3 scripts/analyze_empirical.py --batch_dir "$BATCH_DIR" --dim "$DIM" --shape "$SHAPE"
+
+    # 4. Execute Statistical Modeling (statistical_models.R)
+    # It will look for data_for_gam_r.csv inside the empirical output folder
+    echo -e "\n[3/3] Running R Statistics (Firth and GAM Models)..."
+    Rscript scripts/statistical_models.R "$BATCH_DIR" "$DIM" "$SHAPE"
+fi
+
+
 
 echo "====================================================================================="
 echo " Pipeline Completed Successfully!"

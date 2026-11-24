@@ -8,9 +8,10 @@ outputs/
 *.alg
 
 # MonoAlg3D build artifacts
-MonoAlg3D_C/bin/
+MonoAlg3D_C/bin/*
 MonoAlg3D_C/shared_libs/
 MonoAlg3D_C/build/
+MonoAlg3D_C/build_release/*
 MonoAlg3D_C/*.o
 MonoAlg3D_C/*.so
 
@@ -26,7 +27,7 @@ __pycache__/
 .ipynb_checkpoints/
 
 # Python environments
-.env
+cam_env.yml
 .venv
 env/
 venv/

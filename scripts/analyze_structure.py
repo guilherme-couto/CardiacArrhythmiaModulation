@@ -1,10 +1,3 @@
-"""
-Comprehensive Unified Analysis Module for FibroStruct (2D and 3D).
-
-Reads consolidated CSVs containing topological, spatial, and functional data.
-Dynamically adapts to 2D or 3D datasets, handling explicit invalid data flags.
-"""
-
 import argparse
 import warnings
 import numpy as np
@@ -56,7 +49,6 @@ def apply_bold_ticks(ax):
 
 # SEMANTIC METRIC CATEGORIZATION
 def get_metric_categories(dim_mode):
-    """Categorizes the curated metrics by their physical and mathematical meaning."""
     categories = {
         "Morphology_and_Geometry": {
             "norm_mean_cluster_size": r"Normalized Mean Cluster Size ($\hat{S}$)",
@@ -107,7 +99,7 @@ def sigmoid(x, k, x0):
     return (f_x - f_1) / denom
 
 def fit_sigmoid(x_data, y_data):
-    """Fits the constrained sigmoid and computes the true exact threshold (true_pc)."""
+    """Fits the constrained sigmoid and computes the true exact threshold"""
     p0 = [20.0, 0.5]
     bounds = ([0.001, 0.0], [500.0, 1.0])
     try:
@@ -126,7 +118,6 @@ def fit_sigmoid(x_data, y_data):
         return None, None, None
 
 def plot_percolation_and_get_thresholds(df, out_dir, dim_mode):
-    """Fits sigmoids, extracts decay kinematics, and plots stratified by angle using tab10."""
     sub_dir = out_dir / "percolation_thresholds"
     sub_dir.mkdir(parents=True, exist_ok=True)
     
@@ -152,7 +143,7 @@ def plot_percolation_and_get_thresholds(df, out_dir, dim_mode):
         if pc_g is not None:
             thresholds[ftype] = pc_g
             
-            # CALCULATE RIGOROUS DECAY KINEMATICS
+            # CALCULATE DECAY KINEMATICS
             transition_window = 4.3944 / abs(k_g) if k_g != 0 else np.nan
             max_slope = abs(k_g) / 4.0
             decay_stats[ftype] = {'window': transition_window, 'slope': max_slope}
@@ -252,15 +243,18 @@ def load_and_clean_data(scenario_master_csv, min_den, max_den):
 
 # SUMMARY TABLE EXPORT
 def export_summary_tables(df, thresholds, decay_stats, out_dir, dim_mode):
-    """Exports structured CSVs with means of valid values for table generation."""
+    """Exports structured CSVs with means and std devs of valid values for table generation."""
     table_dir = out_dir / "tables"
     table_dir.mkdir(parents=True, exist_ok=True)
     
     avail_types = [t for t in FIBROSIS_ORDER if t in df['fibrosis_type'].unique()]
     
+    # ---------------------------------------------------------
     # Table 1: Topology and Morphology
+    # ---------------------------------------------------------
     topo_cols = ['morans_i', 'mean_aspect_ratio', 'fractal_dimension', 'betti_0', 'betti_1']
-    if dim_mode == '3D': topo_cols.append('betti_2')
+    if dim_mode == '3D': 
+        topo_cols.append('betti_2')
     topo_cols.append('norm_mean_cluster_size')
     
     topo_data = []
@@ -269,35 +263,86 @@ def export_summary_tables(df, thresholds, decay_stats, out_dir, dim_mode):
         df_type = df[df['fibrosis_type'] == ftype]
         for col in topo_cols:
             if col in df_type.columns:
-                mean_val = df_type[col].dropna().mean()
-                row[col] = mean_val
+                clean_s = df_type[col].dropna()
+                row[col] = clean_s.mean()
+                row[f"{col}_std"] = clean_s.std()
             else:
                 row[col] = np.nan
+                row[f"{col}_std"] = np.nan
         topo_data.append(row)
         
     df_topo = pd.DataFrame(topo_data)
+    
+    # Apply percentage scaling to both mean and std for cluster size
     if 'norm_mean_cluster_size' in df_topo.columns:
         df_topo['norm_mean_cluster_size'] = df_topo['norm_mean_cluster_size'] * 100.0
+    if 'norm_mean_cluster_size_std' in df_topo.columns:
+        df_topo['norm_mean_cluster_size_std'] = df_topo['norm_mean_cluster_size_std'] * 100.0
         
     rename_dict = {
-        'morans_i': 'I', 'mean_aspect_ratio': 'AR', 'fractal_dimension': 'D_f',
-        'betti_0': 'beta_0', 'betti_1': 'beta_1', 'betti_2': 'beta_2',
-        'norm_mean_cluster_size': 'S_hat_pct'
+        'morans_i': 'I', 'morans_i_std': 'I_std',
+        'mean_aspect_ratio': 'AR', 'mean_aspect_ratio_std': 'AR_std',
+        'fractal_dimension': 'D_f', 'fractal_dimension_std': 'D_f_std',
+        'betti_0': 'beta_0', 'betti_0_std': 'beta_0_std',
+        'betti_1': 'beta_1', 'betti_1_std': 'beta_1_std',
+        'betti_2': 'beta_2', 'betti_2_std': 'beta_2_std',
+        'norm_mean_cluster_size': 'S_hat_pct', 'norm_mean_cluster_size_std': 'S_hat_pct_std'
     }
     df_topo.rename(columns=rename_dict, inplace=True)
     df_topo.to_csv(table_dir / f"table_topology_{dim_mode.lower()}.csv", index=False, float_format="%.3f")
     
+    # ---------------------------------------------------------
     # Table 2: Percolation
+    # ---------------------------------------------------------
+    df_perc_calc = df.copy()
+
+    # Calculate tortuosity_x where min_path_x and grid_x are valid
+    if 'min_path_x' in df_perc_calc.columns and 'grid_x' in df_perc_calc.columns:
+        df_perc_calc['tortuosity_x'] = np.where(
+            df_perc_calc['min_path_x'].notna() & (df_perc_calc['grid_x'] > 0),
+            (df_perc_calc['min_path_x'] + 1.0) / df_perc_calc['grid_x'],
+            np.nan
+        )
+    else:
+        df_perc_calc['tortuosity_x'] = np.nan
+
+    # Calculate mean_tortuosity_x as inverse of valid TCE
+    if 'topological_conduction_eff' in df_perc_calc.columns:
+        df_perc_calc['mean_tortuosity_x'] = np.where(
+            df_perc_calc['topological_conduction_eff'].notna() & (df_perc_calc['topological_conduction_eff'] > 0),
+            1.0 / df_perc_calc['topological_conduction_eff'],
+            np.nan
+        )
+    else:
+        df_perc_calc['mean_tortuosity_x'] = np.nan
+
     perc_data = []
     for ftype in avail_types:
         row = {'Phenotype': ftype}
         row['p_c'] = thresholds.get(ftype, np.nan)
         row['p_tw'] = decay_stats.get(ftype, {}).get('window', np.nan)
         
-        if 'topological_conduction_eff' in df.columns:
-            row['TCE'] = df[df['fibrosis_type'] == ftype]['topological_conduction_eff'].dropna().mean()
+        df_type = df_perc_calc[df_perc_calc['fibrosis_type'] == ftype]
+        
+        # TCE & TCE_std
+        if 'topological_conduction_eff' in df_type.columns:
+            tce_s = df_type['topological_conduction_eff'].dropna()
+            row['TCE'] = tce_s.mean()
+            row['TCE_std'] = tce_s.std()
         else:
             row['TCE'] = np.nan
+            row['TCE_std'] = np.nan
+            
+        # tortuosity_x & tortuosity_x_std
+        tort_s = df_type['tortuosity_x'].dropna()
+        row['tortuosity_x'] = tort_s.mean()
+        row['tortuosity_x_std'] = tort_s.std()
+
+        # mean_tortuosity_x & mean_tortuosity_x_std
+        mean_tort_s = df_type['mean_tortuosity_x'].dropna()
+        row['mean_tortuosity_x'] = mean_tort_s.mean()
+        row['mean_tortuosity_x_std'] = mean_tort_s.std()
+
         perc_data.append(row)
         
     df_perc = pd.DataFrame(perc_data)
@@ -317,7 +362,7 @@ def plot_metric_vs_density(df, metric, title, ylabel, out_path):
     
     sns.lineplot(data=df_plot, x='density', y=metric, hue='fibrosis_type',
                  palette=TYPE_COLORS, hue_order=[t for t in FIBROSIS_ORDER if t in df_plot['fibrosis_type'].unique()],
-                 markers=False, dashes=False, errorbar=('ci', 95), linewidth=2.5, ax=ax)
+                 markers=False, dashes=False, errorbar='sd', linewidth=2.5, ax=ax)
             
     ax.set_title(title, fontweight='bold')
     ax.set_xlabel('Fibrosis Density')
@@ -379,7 +424,6 @@ def generate_summary_pointplots(df, out_dir, dim_mode):
             
             fig, ax = plt.subplots(figsize=(10, 8), dpi=300)
             
-            # errorbar='sd'
             sns.pointplot(data=metric_df, x='fibrosis_type', y=metric_col, palette=TYPE_COLORS, errorbar='sd', 
                           order=avail_types, capsize=0.1, markers='o', linestyles='', ax=ax)
             

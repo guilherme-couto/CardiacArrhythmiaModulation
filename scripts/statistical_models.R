@@ -95,7 +95,7 @@ if (has_angles) {
 }
 
 # ==========================================================
-# STEP 1: AUTOMATIC DIAGNOSIS & GAM WINDOW DEFINITION
+# STEP 1: DIAGNOSIS & GAM WINDOW DEFINITION
 # ==========================================================
 event_counts <- data %>% group_by(fibrosis_type) %>% summarise(Total_Successes = sum(successes), .groups = 'drop')
 active_types <- event_counts %>% filter(Total_Successes >= MIN_EVENTS_GAM) %>% pull(fibrosis_type)
@@ -116,12 +116,12 @@ if(length(active_types) > 0) {
         gam_min <- round(gam_min, 2); gam_max <- round(gam_max, 2)
     }
 }
-# Filter data for GAM models to use only the calculated window
+
 data_gam_filtered <- data %>% filter(density >= gam_min & density <= gam_max)
 
 cat("\n[DIAGNOSIS]\n")
-cat("Active Types (GAM Curve):", paste(active_types, collapse=", "), "\n")
-cat("Rare Types (Global Risk Only):", paste(rare_types, collapse=", "), "\n")
+cat("Active Types:", paste(active_types, collapse=", "), "\n")
+cat("Rare Types:", paste(rare_types, collapse=", "), "\n")
 cat("GAM Window:", paste(gam_min, gam_max), "\n")
 
 # ==========================================================
@@ -142,7 +142,7 @@ gam_plot_data_all <- data.frame(); gam_plot_data_real <- data.frame()
 peaks_all <- data.frame(); peaks_real <- data.frame()
 model_all <- NULL; model_real <- NULL
 
-# 1. Fit for all active types (including Uniform)
+# 1. Fit for all active types
 if (length(active_types) > 0) {
   df_all <- data_gam_filtered %>% filter(fibrosis_type %in% active_types) %>% droplevels()
   tryCatch({
@@ -155,7 +155,7 @@ if (length(active_types) > 0) {
   }, error = function(e) {})
 }
 
-# 2. Fit for histology types (Excluding Uniform)
+# 2. Fit for histology types
 real_types <- active_types[active_types != REF_FIBROSIS]
 if (length(real_types) > 0) {
   df_real <- data_gam_filtered %>% filter(fibrosis_type %in% real_types) %>% droplevels()
@@ -228,7 +228,7 @@ summary_file <- file.path(output_dir, "statistical_report.txt")
 sink(summary_file)
 
 cat("==========================================================\n")
-cat(paste("       STATISTICAL FRAMEWORK -", toupper(scenario_name), "    \n"))
+cat(paste("STATISTICAL FRAMEWORK -", toupper(scenario_name), "\n"))
 cat("==========================================================\n\n")
 
 cat("1. DIAGNOSTIC SUMMARY & GAM WINDOW\n")
@@ -245,15 +245,15 @@ if (!is.null(odds_ratios)) {
   cat("\n(Significance p-values):\n")
   print(coef(summary(robust_model))[,4])
 } else {
-  cat("Model not fitted (Monotone data).\n")
+  cat("Model not fitted.\n")
 }
 
 cat("\n----------------------------------------------------------\n")
-cat("3. GAM RESULTS (MODEL: ALL PATTERNS)\n")
+cat("3. GAM RESULTS\n")
 if(!is.null(model_all)) { print(summary(model_all)) }
 
 cat("\n----------------------------------------------------------\n")
-cat("4. GAM RESULTS (MODEL: histology PATTERNS ONLY)\n")
+cat("4. GAM RESULTS (histology PATTERNS ONLY)\n")
 if (nrow(peaks_real) > 0) {
   cat("Estimated Peak Vulnerability:\n")
   print(as.data.frame(peaks_real))
@@ -288,8 +288,8 @@ plot_gam_curves <- function(df, title, filename) {
 }
 
 # PLOT 1: GAM CURVES
-plot_gam_curves(gam_plot_data_all, paste(scenario_name, "- Statistical Model of Arrhythmia Risk"), "statistical_model_fit_all.png")
-plot_gam_curves(gam_plot_data_real, paste(scenario_name, "- Statistical Model of Arrhythmia Risk"), "statistical_model_fit_histology.png")
+plot_gam_curves(gam_plot_data_all, paste(scenario_name, "- Statistical Model of Sustained Reentry"), "statistical_model_fit_all.png")
+plot_gam_curves(gam_plot_data_real, paste(scenario_name, "- Statistical Model of Sustained Reentry"), "statistical_model_fit_histology.png")
 
 # PLOT 2: FOREST PLOT (Odds Ratios)
 if (!is.null(odds_ratios)) {
@@ -304,8 +304,8 @@ if (!is.null(odds_ratios)) {
     scale_color_manual(values = FIB_COLORS, guide="none") +
     scale_linetype_manual(name="", values=c("Baseline"="dashed"), labels=paste("Baseline:", REF_FIBROSIS)) +
     scale_x_log10(breaks = c(0.01, 0.1, 0.5, 1.0, 2.0), labels = scales::label_number(accuracy = 0.01)) +
-    labs(title = paste(scenario_name, "- Relative Arrhythmia Risk"), subtitle = paste("Odds Ratios with 95% Confidence Intervals\nBaseline:", REF_FIBROSIS, "(OR = 1.0)"),
-         x = "Odds Ratio (Log Scale)\n<-- Protective Effect | Increased Risk -->", y = "") +
+    labs(title = paste(scenario_name, "- Relative Odds of Sustained Reentry"), subtitle = paste("Odds Ratios with 95% Confidence Intervals\nBaseline:", REF_FIBROSIS, "(OR = 1.0)"),
+         x = "Odds Ratio (Log Scale)\n<-- Lower Odds | Higher Odds -->", y = "") +
     theme_minimal(base_family = "sans", base_size = 14) +
     theme(axis.text.x = element_text(size=14, color="black", face="bold"), axis.text.y = element_text(size=16, color="black", face="bold"),
           axis.title = element_text(size=16), legend.position = "none", panel.grid.minor = element_blank())
@@ -323,7 +323,7 @@ p_bar <- ggplot(bar_data, aes(x = fibrosis_type, y = Total_Successes, fill = fib
   geom_hline(aes(yintercept = ref_val, linetype = "Baseline"), color = FIB_COLORS[REF_FIBROSIS], linewidth = 1.2) +
   scale_fill_manual(values = FIB_COLORS, guide = "none") +
   scale_linetype_manual(name = "", values = c("Baseline" = "dashed"), labels = paste0("Baseline: ", REF_FIBROSIS, " (", ref_val, " reentries)")) +
-  labs(title = paste(scenario_name, "- Overall Arrhythmia Incidence"), x = "", y = "Total Number of Sustained Reentries") +
+  labs(title = paste(scenario_name, "- Overall Sustained Reentry Incidence"), x = "", y = "Total Number of Sustained Reentries") +
   theme_minimal(base_family = "sans", base_size = 16) +
   theme(axis.text.x = element_text(size=14, color="black", face="bold"), axis.text.y = element_text(size=14, color="black", face="bold"),
         axis.title = element_text(size=16), legend.position = "top", legend.justification = "left", legend.text = element_text(size=14, color=FIB_COLORS[REF_FIBROSIS]),
@@ -351,14 +351,14 @@ if (has_angles) {
     ggsave(file.path(plots_dir, filename), plot=p, width=12, height=8, dpi=300, bg="white")
   }
 
-  plot_gam_angles(gam_angle_plot_data_all, paste(scenario_name, "- Arrhythmia Risk by Fiber Orientation (All)"), "statistical_model_fit_by_angle_all.png")
-  plot_gam_angles(gam_angle_plot_data_real, paste(scenario_name, "- Arrhythmia Risk by Fiber Orientation (Histology)"), "statistical_model_fit_by_angle_histology.png")
+  plot_gam_angles(gam_angle_plot_data_all, paste(scenario_name, "- Sustained Reentry by Fiber Orientation (All)"), "statistical_model_fit_by_angle_all.png")
+  plot_gam_angles(gam_angle_plot_data_real, paste(scenario_name, "- Sustained Reentry by Fiber Orientation (Histology)"), "statistical_model_fit_by_angle_histology.png")
 
   event_counts_angle <- data_angles %>% group_by(fibrosis_type, angle) %>% summarise(Total_Successes = sum(successes), .groups='drop')
   p_bar_angle <- ggplot(event_counts_angle, aes(x=fibrosis_type, y=Total_Successes, fill=angle)) +
     geom_bar(stat="identity", position=position_dodge(width=0.8), width=0.7, color="black") +
     scale_fill_manual(values=ANGLE_COLORS, name="Fiber Angle (°)") +
-    labs(title=paste(scenario_name, "- Arrhythmia Incidence by Pattern and Fiber Orientation"), x="", y="Total Number of Sustained Reentries") +
+    labs(title=paste(scenario_name, "- Sustained Reentry Incidence by Pattern and Fiber Orientation"), x="", y="Total Number of Sustained Reentries") +
     theme_minimal(base_family="sans", base_size=16) +
     theme(axis.text.x=element_text(size=14, color="black", face="bold"), axis.text.y=element_text(size=14, color="black", face="bold"),
           axis.title=element_text(size=16), legend.position="top", legend.title=element_text(size=14, face="bold"),

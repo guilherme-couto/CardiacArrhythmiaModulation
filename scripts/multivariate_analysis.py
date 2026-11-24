@@ -1,10 +1,3 @@
-"""
-Multivariate Analysis Module for FibroStruct (2D and 3D).
-
-Executes Principal Component Analysis (PCA), PCA Biplots, Correlation Heatmaps,
-KDE distributions, Probability curves, and Density-based lineplots.
-"""
-
 import argparse
 import pandas as pd
 import numpy as np
@@ -450,7 +443,7 @@ def analyze_density_lineplots(df, metrics, out_dir, scenario_name):
     for i, metric in enumerate(metrics):
         if df_plot[metric].dropna().empty: continue
         sns.lineplot(data=df_plot, x='density', y=metric, hue='fibrosis_type', palette=TYPE_COLORS, 
-                     hue_order=avail_types, errorbar=('ci', 95), ax=axes[i], legend=(i==0))
+                     hue_order=avail_types, errorbar='sd', ax=axes[i], legend=(i==0))
         axes[i].set_title(clean_name(metric), fontweight='bold', pad=15)
         axes[i].set_xlabel("Fibrosis Density")
         axes[i].set_ylabel("")
@@ -477,7 +470,7 @@ def analyze_density_lineplots(df, metrics, out_dir, scenario_name):
     for i, metric in enumerate(metrics):
         if df_plot[metric].dropna().empty: continue
         sns.lineplot(data=df_plot, x='density', y=metric, hue='Outcome_Label', palette=OUTCOME_COLORS, 
-                     errorbar=('ci', 95), ax=axes[i], legend=(i==0))
+                     errorbar='sd', ax=axes[i], legend=(i==0))
         axes[i].set_title(clean_name(metric), fontweight='bold', pad=15)
         axes[i].set_xlabel("Fibrosis Density")
         axes[i].set_ylabel("")
@@ -565,7 +558,7 @@ def generate_pairplots(df, metrics, out_dir, scenario_name):
     g_pheno.add_legend(title="")
     sns.move_legend(g_pheno, "upper right", bbox_to_anchor=(0.8, 0.8), ncol=1, title=None, frameon=True, markerscale=4, fontsize=22)
     
-    g_pheno.fig.suptitle(f"{scenario_name} - Bivariate Structural Metrics by Phenotype", fontsize=26, fontweight='bold')
+    g_pheno.fig.suptitle(f"{scenario_name} - Pairwise Structural Metrics by Phenotype", fontsize=26, fontweight='bold')
     g_pheno.savefig(pair_dir / "pairplot_by_phenotype.png", bbox_inches='tight')
     plt.close(g_pheno.fig)
 
@@ -586,7 +579,7 @@ def generate_pairplots(df, metrics, out_dir, scenario_name):
     g_reentry.add_legend(title="")
     sns.move_legend(g_reentry, "upper right", bbox_to_anchor=(0.8, 0.8), ncol=1, title=None, frameon=True, markerscale=4, fontsize=22)
     
-    g_reentry.fig.suptitle(f"{scenario_name} - Bivariate Structural Metrics by Reentry Outcome", fontsize=26, fontweight='bold')
+    g_reentry.fig.suptitle(f"{scenario_name} - Pairwise Structural Metrics by Reentry Outcome", fontsize=26, fontweight='bold')
     g_reentry.savefig(pair_dir / "pairplot_by_reentry.png", bbox_inches='tight')
     plt.close(g_reentry.fig)
 
@@ -643,7 +636,7 @@ def main():
     analyze_reentry_probability_curves(df, metrics, out_path, scenario_name)
     analyze_density_lineplots(df, structural_only_metrics, out_path, scenario_name)
     
-    print("4. Generating Bivariate Pairplots...")
+    print("4. Generating Pairwise Pairplots...")
     generate_pairplots(df, structural_only_metrics, out_path, scenario_name)
     
     print(f"\nSUCCESS! All multivariate analyses saved to: {out_path}")

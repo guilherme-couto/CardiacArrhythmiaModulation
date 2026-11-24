@@ -1,5 +1,5 @@
 ## 1. Overview
-A computational framework designed to create histology-inspired cardiac fibrosis patterns for electrophysiological simulations. It operates on a **Geometry-Noise-Threshold** pipeline.
+A computational framework designed to create histology-inspired cardiac fibrosis patterns for electrophysiological simulations.
 
 The core engine is written in **GNU Octave** (MATLAB compatible) for high-speed matrix operations, orchestrated via **Python** for advanced visualization.
 

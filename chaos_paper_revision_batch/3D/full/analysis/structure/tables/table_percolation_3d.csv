@@ -1,6 +1,6 @@
-Phenotype,p_c,p_tw,TCE
-Uniform,0.675,0.011,0.794
-Compact,0.864,0.378,0.855
-Diffuse,0.861,0.045,0.801
-Interstitial,0.885,0.057,0.803
-Patchy,0.902,0.090,0.808
+Phenotype,p_c,p_tw,TCE,TCE_std,tortuosity_x,tortuosity_x_std,mean_tortuosity_x,mean_tortuosity_x_std
+Uniform,0.675,0.011,0.794,0.158,1.234,0.263,1.325,0.344
+Compact,0.864,0.378,0.855,0.125,1.032,0.115,1.202,0.224
+Diffuse,0.861,0.045,0.801,0.162,1.172,0.295,1.323,0.393
+Interstitial,0.885,0.057,0.803,0.166,1.171,0.313,1.327,0.427
+Patchy,0.902,0.090,0.808,0.167,1.150,0.303,1.318,0.416

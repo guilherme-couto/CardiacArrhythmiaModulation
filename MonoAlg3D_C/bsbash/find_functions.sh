@@ -2,10 +2,10 @@
 
 FIND_CUDA () {
 	#CUDA RELATED VARIABLES
-	CUDA_LIBRARY_PATH="/usr/local/cuda-12.9/lib64"
+	CUDA_LIBRARY_PATH=""
 	CUDA_MATH_LIBRARY_PATH=""
-	CUDA_INCLUDE_PATH="/usr/local/cuda-12.9/include"
-	NVCC="/usr/local/cuda-12.9/bin/nvcc"
+	CUDA_INCLUDE_PATH=""
+	NVCC=""
 	CUDA_FOUND=""
 
 	LD_CONFIG=ldconfig

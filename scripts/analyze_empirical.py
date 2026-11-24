@@ -179,7 +179,7 @@ def plot_combined_curves_and_gantt(df_raw, df_viz, min_w, max_w, output_dir, sce
     y_limit = min(max(max_prob * 1.15, 0.1), 1.0)
 
     add_raw_lines_curves(ax_curves, df_viz, min_w, max_w)
-    ax_curves.set_title(f"{scenario_name} - Empirical Arrhythmia Probability & Vulnerability Windows", fontsize=22)
+    ax_curves.set_title(f"{scenario_name} - Sustained Reentry Probability & Vulnerability Windows", fontsize=22)
     ax_curves.set_ylabel("Probability of Sustained Reentry", fontsize=20)
     ax_curves.set_ylim(0, y_limit)
     ax_curves.legend()
@@ -279,7 +279,6 @@ def main():
     if df_raw['fibrosis_type'].dtype == object:
         df_raw['fibrosis_type'] = df_raw['fibrosis_type'].str.strip().str.capitalize()
 
-    # Core window logic for Empirical Plots
     core_min, core_max = detect_window(df_raw, args.force_min, args.force_max)
     min_w = max(df_raw['density'].min(), round(core_min - args.pad_left, 2))
     max_w = min(df_raw['density'].max(), round(core_max + args.pad_right, 2))
@@ -289,16 +288,16 @@ def main():
     print(f"Core Active Window: [{core_min:.2f}, {core_max:.2f}]")
     print(f"Padded Analysis Window: [{min_w:.2f}, {max_w:.2f}]")
 
-    # 1. Overall Aggregation for Visuals (Uses window)
+    # Overall Aggregation for Visuals (Uses window)
     df_viz = df_window.groupby(['fibrosis_type', 'density'])['sustained_reentry'].mean().reset_index()
     df_viz.rename(columns={'sustained_reentry': 'prob'}, inplace=True)
 
-    # 2. Aggregation for R (Uses entire dataset so R can calculate its own GAM window)
+    # Aggregation for R
     df_r = df_raw.groupby(['fibrosis_type', 'density'])['sustained_reentry'].agg(['count', 'sum']).reset_index()
     df_r.rename(columns={'count': 'trials', 'sum': 'successes'}, inplace=True)
     df_r['failures'] = df_r['trials'] - df_r['successes']
 
-    # 3. Angle-Specific Aggregation
+    # Angle-Specific Aggregation
     if ANGLE_COL in df_raw.columns:
         df_angle_r = df_raw.groupby(['fibrosis_type', 'density', ANGLE_COL])['sustained_reentry'].agg(['count', 'sum']).reset_index()
         df_angle_r.rename(columns={'count': 'trials', 'sum': 'successes'}, inplace=True)
@@ -342,7 +341,6 @@ def main():
                 f.write(f"{f_type}:\n  No arrhythmias detected\n\n")
                 continue
 
-            # Group adjacent density points into continuous intervals
             intervals = []
             start_d, prev_d = active_d[0], active_d[0]
             for d in active_d[1:]:
@@ -378,19 +376,16 @@ def main():
     plots_dir = out_dir / "plots"
     plots_dir.mkdir(parents=True, exist_ok=True)
 
-    # Gantt Chart for Vulnerability Windows (uses entire dataset to show full spectrum)
     plot_vulnerability_windows(df_raw, plots_dir, scenario_name)
 
-    # Combined Curves and Gantt (curves use window, gantt uses entire dataset for context)
     plot_combined_curves_and_gantt(df_raw, df_viz, min_w, max_w, plots_dir, scenario_name)
 
-    # Overall Curves (uses window)
     plt.figure(figsize=(10, 6))
     ax_main = plt.gca()
     #ax_main.grid(True, color='gray', linestyle='--', linewidth=0.5, alpha=0.4)
     y_limit = min(max(df_viz['prob'].max() * 1.15, 0.1), 1.0)
     add_raw_lines_curves(ax_main, df_viz, min_w, max_w)
-    plt.title(f"{scenario_name} - Empirical Arrhythmia Probability")
+    plt.title(f"{scenario_name} - Sustained Reentry Probability")
     plt.xlabel("Fibrosis Density")
     plt.ylabel("Probability of Sustained Reentry")
     plt.ylim(0, y_limit)
@@ -399,11 +394,10 @@ def main():
     plt.savefig(plots_dir / "window_curves_overall.png", dpi=300)
     plt.close()
 
-    # Raw Pointplot (uses window)
     plt.figure(figsize=(8, 6))
     ax_pt = sns.pointplot(data=df_window, x="fibrosis_type", y="sustained_reentry", hue="fibrosis_type",
                           order=CATEGORY_ORDER, palette=FIBROSIS_PALETTE, legend=False, capsize=.1, marker="o", linestyle="none")
-    plt.title(f"{scenario_name} - Empirical Arrhythmia Risk Intensity")
+    plt.title(f"{scenario_name} - Sustained Reentry Risk Intensity")
     plt.ylabel("Probability of Sustained Reentry")
     plt.xlabel("Fibrosis Pattern")
     ax_pt.yaxis.set_major_formatter(ticker.FormatStrFormatter('%.2f'))
@@ -412,7 +406,7 @@ def main():
     plt.savefig(plots_dir / "window_pointplot.png", dpi=300)
     plt.close()
 
-    # Angle-Specific Curves (2x2 Grid) - uses window for curves
+    # Angle-Specific Curves (2x2 Grid)
     if df_viz_angle is not None:
         fig, axes = plt.subplots(2, 2, figsize=(14, 10), sharex=True, sharey=True)
         axes = axes.flatten()

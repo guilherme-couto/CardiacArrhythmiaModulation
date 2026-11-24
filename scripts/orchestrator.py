@@ -1,6 +1,4 @@
 """
-Cardiac Arrhythmia Modulation Orchestrator: FibroStruct (Structure) + MonoAlg3D (EP Simulation).
-
 This script orchestrates the entire pipeline for generating fibrotic meshes, calculating structural metrics,
 running electrophysiological simulations with MonoAlg3D, and compiling results into a master dataset.
 
@@ -30,8 +28,6 @@ from fibro_metrics import (
 warnings.filterwarnings('ignore')
 
 
-# DYNAMIC PATH RESOLUTION
-# Resolves the project root relative to where the script is located
 SCRIPT_DIR = Path(__file__).resolve().parent
 PROJECT_ROOT = SCRIPT_DIR.parent
 OCTAVE_SCRIPT_DIR = PROJECT_ROOT / "perlin-fibrosis-generator"
@@ -40,7 +36,6 @@ MONOALG_EXE = MONOALG3D_DIR / "bin" / "MonoAlg3D"
 
 
 # HELPER CLASSES AND FUNCTIONS
-# Custom ConfigParser to preserve case sensitivity of keys
 class CasePreservingConfigParser(configparser.ConfigParser):
     def optionxform(self, optionstr): return optionstr
 
@@ -72,11 +67,6 @@ def setup_logging(log_file=None):
         root_logger.addHandler(file_handler)
 
 def print_progress(iteration, total, prefix='', suffix='', length=40):
-    """
-    Adaptive progress indicator:
-    - Desktop (Interactive Terminal): Animated bar.
-    - Cluster (Non-interactive/File): Discrete logs every 10%.
-    """
     is_interactive = sys.stdout.isatty()
     percent = 100 * (iteration / float(total))
     if is_interactive:
@@ -105,7 +95,6 @@ def generate_fibrosis_mesh(mesh_config, output_batch_dir):
     domain_str = ','.join(map(str, domain_vec))
     core_str = ','.join(map(str, core_vec)) if core_vec else ''
 
-    # Construct Output Path
     tmp_id = uuid.uuid4().hex[:8]
     output_dir = Path(output_batch_dir) / f_type
     output_dir.mkdir(parents=True, exist_ok=True)
@@ -114,7 +103,6 @@ def generate_fibrosis_mesh(mesh_config, output_batch_dir):
     full_output_path = output_dir / filename_no_ext
     final_mesh_path = full_output_path.with_suffix(full_output_path.suffix + ".alg")
 
-    # Skip if exists
     if final_mesh_path.exists(): return str(final_mesh_path)
     logging.debug(f"Generating mesh via Octave: {final_mesh_path.name}")
 
@@ -156,7 +144,7 @@ def parse_alg_to_grid(mesh_path, dim_mode="2D"):
             grid = np.ones((len(unique_y), len(unique_x))) * -1 
             grid[y_idx, x_idx] = tags
             
-        # Assuming tag 0 = Conducting, 1 = Fibrosis. Return True for Conducting, False for Fibrosis.
+        # Assuming tag 0 = Conducting, 1 = Fibrosis. Return True for Conducting, False for Fibrosis
         return (grid == 0)
     except Exception:
         return None
@@ -176,7 +164,7 @@ def configure_and_run_simulation(mesh_path, sim_output_dir, sim_params, batch_di
         first_line = f.readline()
         lines_count = sum(1 for _ in f) + 1 # +1 for the line we just read
         parts = first_line.split(',')
-        half_dx = float(parts[3].strip()) # Column 3 (0-index 3) is dx/2 in GNT output format
+        half_dx = float(parts[3].strip()) # Column 3 (0-index 3) is dx/2 in output format
         num_extra_fields = len(parts) - 6
 
     # Configure .ini
@@ -246,10 +234,9 @@ def cleanup_simulation_files(mesh_path, sim_output_dir):
                     logging.warning(f"Failed to delete output item {item.name}: {e}")
 
 
-# THE WORKER
+# WORKER
 def process_single_seed(seed, angle_deg, density, mesh_config, batch_dir, base_config_path, shape, atpi_val, keep_meshes=False):
     """
-    Unified Worker: 
     1. Generates Mesh -> 2. Calculates Structure -> 3. Runs EP Solver -> 4. Deletes Mesh.
     """
     mesh_path = None
@@ -271,7 +258,7 @@ def process_single_seed(seed, angle_deg, density, mesh_config, batch_dir, base_c
         conducting_mask = parse_alg_to_grid(mesh_path, dim_mode=dim_mode)
         if conducting_mask is None: return {"seed": seed, "error": "Failed to parse mesh or insufficient dimensions."}
 
-        # Strict Dimension Validation
+        # Dimension Validation
         expected_x = int(round(local_config["domain_dims"][1] / dx))
         expected_y = int(round(local_config["domain_dims"][2] / dx))
         if dim_mode == "2D":

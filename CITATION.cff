@@ -1,0 +1,72 @@
+cff-version: 1.2.0
+message: "If you use this software or pipeline in your research, please cite both the software repository and the associated article."
+title: "Histology-inspired fibrosis patterns alter wave propagation and sustained reentry in computational cardiac tissue"
+version: 1.0.0
+date-released: 2026-11-24
+license: MIT
+repository-code: "https://github.com/guilherme-couto/CardiacArrhythmiaModulation"
+keywords:
+  - cardiac fibrosis
+  - perlin noise
+  - computational cardiology
+  - reentry dynamics
+authors:
+  - given-names: "G. M."
+    family-names: "Couto"
+    affiliation: "Federal University of Juiz de Fora"
+    orcid: "https://orcid.org/0009-0009-3805-0445"
+  - given-names: "B. A. J."
+    family-names: "Lawson"
+    affiliation: "Queensland University of Technology"
+    orcid: "https://orcid.org/0000-0003-1317-5988"
+  - given-names: "K."
+    family-names: "Burrage"
+    affiliation: "Queensland University of Technology"
+    orcid: "https://orcid.org/0000-0002-8111-1137"
+  - given-names: "B. M."
+    family-names: "Rocha"
+    affiliation: "Federal University of Juiz de Fora"
+    orcid: "https://orcid.org/0000-0002-0508-8959"
+  - given-names: "J. O."
+    family-names: "Campos"
+    affiliation: "Federal University of Juiz de Fora"
+    orcid: "https://orcid.org/0000-0003-1899-9441"
+  - given-names: "R. W."
+    family-names: "dos Santos"
+    email: "rodrigo.weber@ufjf.br"
+    affiliation: "Federal University of Juiz de Fora"
+    orcid: "https://orcid.org/0000-0002-0633-1391"
+preferred-citation:
+  type: article
+  title: "Histology-inspired fibrosis patterns alter wave propagation and sustained reentry in computational cardiac tissue"
+  journal: "Chaos: An Interdisciplinary Journal of Nonlinear Science"
+  publisher: "AIP Publishing"
+  volume: 36
+  year: 2026
+  doi: "10.1063/5.0351986"
+authors:
+  - given-names: "G. M."
+    family-names: "Couto"
+    affiliation: "Federal University of Juiz de Fora"
+    orcid: "https://orcid.org/0009-0009-3805-0445"
+  - given-names: "B. A. J."
+    family-names: "Lawson"
+    affiliation: "Queensland University of Technology"
+    orcid: "https://orcid.org/0000-0003-1317-5988"
+  - given-names: "K."
+    family-names: "Burrage"
+    affiliation: "Queensland University of Technology"
+    orcid: "https://orcid.org/0000-0002-8111-1137"
+  - given-names: "B. M."
+    family-names: "Rocha"
+    affiliation: "Federal University of Juiz de Fora"
+    orcid: "https://orcid.org/0000-0002-0508-8959"
+  - given-names: "J. O."
+    family-names: "Campos"
+    affiliation: "Federal University of Juiz de Fora"
+    orcid: "https://orcid.org/0000-0003-1899-9441"
+  - given-names: "R. W."
+    family-names: "dos Santos"
+    email: "rodrigo.weber@ufjf.br"
+    affiliation: "Federal University of Juiz de Fora"
+    orcid: "https://orcid.org/0000-0002-0633-1391"
